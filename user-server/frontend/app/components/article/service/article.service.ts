@@ -1,13 +1,16 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { articleCountAPI, deleteUserAPI, findAllArticlesAPI, findArticleByIdAPI } from "./article.api";
+import { articleCountAPI, deleteArticleAPI, findAllArticlesAPI, findArticleByIdAPI, saveArticleAPI } from "./article.api";
+import { IArticle } from "../model/article";
 
 export const findAllArticles : any = createAsyncThunk(
     'articles/findAllArticles',
-     async (page:number)=>{
-    const data:any = await findAllArticlesAPI(10);
+     async (id:number)=>{
+    const data:any = await findAllArticlesAPI(id);
     
     return data
 })
+
+
 
 export const findArticleById : any = createAsyncThunk(
     'articles/findArticleById',
@@ -15,10 +18,10 @@ export const findArticleById : any = createAsyncThunk(
     const data:any = await findArticleByIdAPI(id);
     return data
 })
-export const deleteUser : any = createAsyncThunk(
-    'articles/deleteUser',
+export const deleteArticle : any = createAsyncThunk(
+    'articles/deleteArticle',
      async (id:number)=>{
-    const data:any = await deleteUserAPI(id);
+    const data:any = await deleteArticleAPI(id);
     return data
 })
 
@@ -26,5 +29,12 @@ export const articleCount : any = createAsyncThunk(
     'articles/articleCount',
      async ()=>{
     const data:any = await articleCountAPI();
+    return data
+})
+
+export const saveArticle : any = createAsyncThunk(
+    'articles/saveArticle',
+     async (article:IArticle)=>{
+    const data:any = await saveArticleAPI(article);
     return data
 })

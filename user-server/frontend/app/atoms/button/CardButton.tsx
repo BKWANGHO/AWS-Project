@@ -9,16 +9,16 @@ import Link from "next/link";
 export default function CardButton ({id,title,description}:IBoard) {
  return(<li >
  <div className="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <Link href={`${PG.BOARD}/detail/${id}`}>
+        <Link href={`${PG.ARTICLE}/list/${id}`}>
             <img className="rounded-t-lg" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5BDZ2gxcdM4-mhOT_F7z3wVDlR-k-7vkriA&usqp=CAU" alt="" />
         </Link>
         <div className="p-5">
-            <Link href={`${PG.BOARD}/detail/${id}`}>
+            <Link href={`${PG.ARTICLE}/list/${id}`}>
                 <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                     {title}</h5>
             </Link>
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{description}</p>
-            <Link href={`${PG.BOARD}/detail/${id}`} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center
+            <Link href={`${PG.ARTICLE}/list/${id}`} className="inline-flex items-center px-3 py-2 text-sm font-medium text-center
              text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none
               focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 {title} 목록보기

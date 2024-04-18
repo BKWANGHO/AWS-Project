@@ -6,7 +6,7 @@ export const initialState:IArticle={
     title: '',
     content: '',
     writer: '',
-    board : '',
+    board : 0,
     regDate : '',
     modDate : '',
     array: [],

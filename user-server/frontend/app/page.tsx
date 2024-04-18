@@ -47,12 +47,9 @@ export default function Home() {
       console.log('서버에서 넘어온 메세지'+ parseCookies().message)
       console.log('서버에서 넘어온 토큰'+ parseCookies().token)
 
-      router.push(`${PG.BOARD}/card`)
-    } else if (auth.message === 'ADMIN') {
-    
-      alert('로그인 실패')
-    
-    } else {
+      router.push(`${PG.BOARD}/list`)
+         
+    }else {
     }
   }, [auth])
 

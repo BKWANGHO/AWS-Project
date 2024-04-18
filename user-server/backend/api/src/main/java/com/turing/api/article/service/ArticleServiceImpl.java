@@ -2,6 +2,8 @@ package com.turing.api.article.service;
 
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.article.repository.ArticleRepository;
+import com.turing.api.board.model.Board;
+import com.turing.api.board.repository.BoardRepository;
 import com.turing.api.common.component.Messenger;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -9,24 +11,27 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository repository;
+    private final BoardRepository boardRepo;
+
     @Override
     public Messenger save(ArticleDto articleDto) {
-
-//     repository.save(dtoToEntity(articleDto));
-        return null;
+        Board board = boardRepo.findById(articleDto.getBoard()).orElseThrow();
+     repository.save(dtoToEntity(articleDto,board));
+        return Messenger.builder()
+                .message("SUCCESS")
+                .build();
     }
 
     @Override
     public Messenger deleteById(Long id) {
-    repository.deleteById(id);
-    return null;
+        repository.deleteById(id);
+        return null;
     }
 
     @Override
@@ -37,7 +42,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleDto> findAll() {
         return repository.findAll()
-                .stream().map(i->entityToDto(i)).toList();
+                .stream().map(i -> entityToDto(i)).toList();
 
     }
 
@@ -58,8 +63,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDto> findAByBoardId(Long id) {
-
-        return repository.findByBoardId(id).stream().map(i->entityToDto(i)).toList();
+    public List<ArticleDto> findByBoardId(Long id) {
+//        return repository.findByBoardId(id).stream().map(i->entityToDto(i)).toList();
+        return repository.getArticlesByBoardId(id)
+                .stream().map(i -> entityToDto(i)).toList();
     }
 }

@@ -14,13 +14,11 @@ import lombok.*;
 public class Article extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "article_id")
     private Long id;
-
     private String title;
-
     private String content;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User writer;

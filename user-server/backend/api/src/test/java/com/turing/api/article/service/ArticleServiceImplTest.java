@@ -29,7 +29,7 @@ public class ArticleServiceImplTest {
     private ArticleRepository repository;
     @BeforeEach
     void setUp(){
-        this.service = new ArticleServiceImpl(repository);
+//        this.service = new ArticleServiceImpl(repository);
     }
 
     @BeforeEach

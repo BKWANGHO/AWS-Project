@@ -2,6 +2,7 @@ package com.turing.api.article.service;
 
 import com.turing.api.article.model.Article;
 import com.turing.api.article.model.ArticleDto;
+import com.turing.api.board.model.Board;
 import com.turing.api.common.service.CommandService;
 import com.turing.api.common.service.QueryService;
 import com.turing.api.user.model.User;
@@ -15,14 +16,13 @@ import java.util.Optional;
 
 public interface ArticleService extends CommandService<ArticleDto>, QueryService<ArticleDto> {
 
-//    default Article dtoToEntity(ArticleDto articleDto){
-    default Article dtoToEntity(ArticleDto articleDto, Long userid){
-        UserRepository repo;
+
+    default Article dtoToEntity(ArticleDto articleDto, Board board){
         return Article.builder()
-//                .title(articleDto.getTitle())
-//                .content(articleDto.getContent())
-//                .writer(articleDto.getWriter())
-//                .writer(userrepo.findById(articleDto.getWriter()))
+                .title(articleDto.getTitle())
+                .content(articleDto.getContent())
+//                .writer(User.builder().id(articleDto.getWriter()).build())
+                .board(board)
                 .build();
     }
 
@@ -32,12 +32,12 @@ public interface ArticleService extends CommandService<ArticleDto>, QueryService
                 .id(article.getId())
                 .title(article.getTitle())
                 .content(article.getContent())
-                .writer(article.getWriter().getUsername())
-                .board(article.getBoard().getTitle())
+//                .writer(article.getWriter().getId())
+                .board(article.getBoard().getId())
                 .regDate(String.valueOf(article.getRegDate()))
                 .modDate(String.valueOf(article.getRegDate()))
                 .build();
     }
 
-    List<ArticleDto> findAByBoardId(Long id);
+    List<ArticleDto> findByBoardId(Long id);
 }

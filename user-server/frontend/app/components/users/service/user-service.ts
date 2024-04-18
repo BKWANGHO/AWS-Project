@@ -20,7 +20,7 @@ export const findUserById : any = createAsyncThunk(
 
 export const modifyUser : any = createAsyncThunk(
     'users/modifyUser',
-     async (dto:{})=>{
+     async (dto:IUser)=>{
     const data:any = await modifyUserAPI(dto);
     return data
 })

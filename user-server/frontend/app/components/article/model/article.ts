@@ -3,7 +3,7 @@ export interface IArticle{
     title? : string
     content? : string
     writer? : string
-    board? : string
+    board? : number
     regDate? : string
     modDate? : string
     array? : IArticle[]

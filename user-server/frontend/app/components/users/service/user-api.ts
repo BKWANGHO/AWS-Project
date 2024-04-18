@@ -24,7 +24,7 @@ export const findUserByIdAPI = async (id:number)=>{
     console.log(error)
     }}
     
-export const modifyUserAPI = async (dto:{})=>{
+export const modifyUserAPI = async (dto:IUser)=>{
     console.log(dto)
     try{
         const response = await instance.put('/users/modify', dto)

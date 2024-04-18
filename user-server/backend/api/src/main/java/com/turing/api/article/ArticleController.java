@@ -28,14 +28,9 @@ public class ArticleController {
 
     @PostMapping("")
     public ResponseEntity<Messenger> save(@RequestBody ArticleDto articleDto){
+        log.info(String.valueOf(articleDto));
         return ResponseEntity.ok(service.save(articleDto));
     }
-
-    @GetMapping("/listAll")
-    public ResponseEntity<List<ArticleDto>> findAll(){
-        return ResponseEntity.ok(service.findAll());
-    }
-
 
     @GetMapping("/detail")
     public ResponseEntity<Optional<ArticleDto>> findById(@RequestParam Long id){
@@ -43,8 +38,8 @@ public class ArticleController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ArticleDto>> findArticlesByBoardId(@RequestParam Long id){
-        return ResponseEntity.ok(service.findAByBoardId(id));
+    public ResponseEntity<List<ArticleDto>> findByBoardId(@RequestParam Long id){
+        return ResponseEntity.ok(service.findByBoardId(id));
     }
 
     @PutMapping( "/modify")

@@ -24,6 +24,7 @@ public class User extends BaseEntity {
     private String name;
     private String phone;
     private String job;
+    private String token;
 
     @OneToMany(mappedBy = "writer",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Article> articles;

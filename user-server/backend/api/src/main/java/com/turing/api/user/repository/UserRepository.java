@@ -5,6 +5,9 @@ import com.turing.api.common.component.PageRequestVo;
 import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -19,5 +22,10 @@ public interface UserRepository extends JpaRepository<User,Long> {
 
     List<UserDto> findUsersByJob(String job);
 
+    @Modifying
+    @Query("update users set token = :token where id = :id")
+    void modifyTokenById(@Param("id") Long id ,@Param("token") String token);
+
+    Boolean existsByUsername(String param);
 
 }

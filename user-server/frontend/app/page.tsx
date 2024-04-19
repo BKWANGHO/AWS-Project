@@ -9,51 +9,77 @@ import { API } from "./components/common/enums/API";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { getAuth } from "./components/users/service/user-slice";
-import { login } from "./components/users/service/user-service";
+import { getAuth, getIdCheck } from "./components/users/service/user-slice";
+import { existsByUsername, login } from "./components/users/service/user-service";
 import { IUser } from "./components/users/model/user.model";
 import {parseCookies,destroyCookie,setCookie} from "nookies"
+import { jwtDecode } from "jwt-decode";
 
 export default function Home() {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const dispatch = useDispatch()
-
+  const router = useRouter()
+  const [isWrongID, setisWrongID] = useState('')
+  const [isexistsID, setisexistsID] = useState('')
+  const [isWrongPW, setisWrongPW] = useState(false)
   const [user,setUser] = useState({} as IUser)
 
+  const getUsernameCheck = useSelector(getIdCheck)
   const auth = useSelector(getAuth)
 
 
   const handleUsername = (e: any) => {
-    setUser({
-      ...user,username:e.target.value
-    })
+    const ID_CHECK = /^[a-zA-Z][a-zA-Z]{2,10}$/g
+    //영어대문자로 시작하는 6~20자의 영어단어 
+    const username = e.target.value
+
+    if(ID_CHECK.test(username)){
+      setisWrongID('false')
+      setUser({
+        ...user,username:username
+      })
+    }else{
+      setisWrongID('true')
+    }
   }
 
   const handlePassword = (e: any) => {
-    setUser({
-      ...user,password:e.target.value
-    })
+    const PW_CHECK = /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"][a-zA-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{5,19}$/g;
+    if(PW_CHECK){
+      setisWrongPW(true)
+      setUser({
+        ...user,password:e.target.value
+      })
+    }else{
+      setisWrongPW(false)
+    }
   }
 
-  const router = useRouter();
+  const handleSubmit = () => {
+    dispatch(existsByUsername(user.username))
+    console.log('보내는 데이터 ' + user.username)
+    console.log('받은데이티 : '+getUsernameCheck )
+    // dispatch(login(user))}
+    if(getUsernameCheck){
+      setisexistsID('true')
 
-  const handleSubmit = () => (dispatch(login(user)))
-  
+    }
+  }
+
+
   useEffect(() => {
+    
     if (auth.message === "SUCCESS") {
       setCookie({},'message',auth.message,{ httpOnly: false, path: '/' })
       setCookie({},'token',auth.token,{ httpOnly: false, path: '/' })
       console.log('서버에서 넘어온 메세지'+ parseCookies().message)
       console.log('서버에서 넘어온 토큰'+ parseCookies().token)
+      console.log('토큰을 디코드한 내용' +JSON.stringify(jwtDecode<any>(parseCookies().token)))
 
       router.push(`${PG.BOARD}/list`)
-         
     }else {
     }
-  }, [auth])
 
-  
+  }, [auth])
 
   return (<div className="text-center" >
     <h1 >Welcome to react world  !!</h1><br />
@@ -69,7 +95,7 @@ export default function Home() {
           <p className="text-xl text-gray-600 text-center">Welcome back!</p>
           <div className="mt-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Email Address
+             ID
             </label>
             <input
               onChange={handleUsername}
@@ -78,6 +104,11 @@ export default function Home() {
               required
             />
           </div>
+          {isWrongID !== '' && (isWrongID ==='true'? 
+          (<pre><h6 className="text-red-500">잘못된 형식입니다.</h6> </pre>) :
+          (<pre><h6 className="text-blue-500">올바른 형식입니다.</h6> </pre>)) }
+
+          {user.username?.length !=0 && getUsernameCheck && (<pre><h6 className="text-red-500">없는아이디입니다.</h6> </pre>) }
           <div className="mt-4 flex flex-col justify-between">
             <div className="flex justify-between">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -89,6 +120,9 @@ export default function Home() {
               className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
               type="password"
             />
+              {isWrongPW && (<pre>
+            <h6 className="text-red-500">잘못된 형식입니다.</h6>
+          </pre>)}
             <a
               href="#"
               className="text-xs text-gray-500 hover:text-gray-900 text-end w-full mt-2"

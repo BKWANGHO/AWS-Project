@@ -5,9 +5,12 @@ import com.turing.api.common.component.Messenger;
 import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
 import com.turing.api.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -15,6 +18,7 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserServiceImple implements UserService {
 
     private final UserRepository repository;
@@ -111,14 +115,33 @@ public class UserServiceImple implements UserService {
 
 
 //  Srp 에 따라 아이디 존재여부를 프론트에서 먼저 판단하고 넘어옴 (시큐리티)
+    @Transactional
     @Override
     public Messenger login(UserDto param) {
-        boolean flag = repository.findByUsername(param.getUsername()).get()
-                .getPassword().equals(param.getPassword());
+        User user = repository.findByUsername(param.getUsername()).get();
+
+        boolean flag = user.getPassword().equals(param.getPassword());
+
+        String token = jwtProvider.createToken(entityToDto(user));
+
+        String[] chunks = token.split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String header = new String(decoder.decode(chunks[0]));
+        String payload = new String(decoder.decode(chunks[1]));
+
+        log.info("token Header" + header);
+        log.info("token payload" + payload);
+
+        repository.modifyTokenById(user.getId(), token);
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? jwtProvider.createToken(param) : "None")
+                .token(flag ? token : "None")
                 .build();
+    }
+
+    @Override
+    public Boolean existsByUsername(String param) {
+        return repository.existsByUsername(param);
     }
 }

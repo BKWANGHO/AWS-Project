@@ -1,4 +1,4 @@
-package com.turing.api.common.component;
+package com.turing.api.common.component.pagination;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

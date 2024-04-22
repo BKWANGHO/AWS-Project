@@ -1,6 +1,6 @@
 package com.turing.api.user.service;
 
-import com.turing.api.common.component.JwtProvider;
+import com.turing.api.common.component.security.JwtProvider;
 import com.turing.api.common.component.Messenger;
 import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
@@ -118,27 +118,24 @@ public class UserServiceImple implements UserService {
     @Transactional
     @Override
     public Messenger login(UserDto param) {
+        log.info("로그인 서비스 확인 : "+param);
         User user = repository.findByUsername(param.getUsername()).get();
 
         boolean flag = user.getPassword().equals(param.getPassword());
 
-        String token = jwtProvider.createToken(entityToDto(user));
+        String accessToken = jwtProvider.createToken(entityToDto(user));
 
-        String[] chunks = token.split("\\.");
-        Base64.Decoder decoder = Base64.getUrlDecoder();
-        String header = new String(decoder.decode(chunks[0]));
-        String payload = new String(decoder.decode(chunks[1]));
+        jwtProvider.getPayload(accessToken);
 
-        log.info("token Header" + header);
-        log.info("token payload" + payload);
-
-        repository.modifyTokenById(user.getId(), token);
+        repository.modifyTokenById(user.getId(), accessToken);
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? token : "None")
+                .accessToken(flag ? accessToken : "None")
                 .build();
     }
+
+
 
     @Override
     public Boolean existsByUsername(String param) {

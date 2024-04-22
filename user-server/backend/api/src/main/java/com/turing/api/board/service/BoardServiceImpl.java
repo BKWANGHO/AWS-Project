@@ -1,13 +1,9 @@
 package com.turing.api.board.service;
 
 import com.turing.api.board.model.BoardDto;
-import com.turing.api.board.model.BoardDto;
 import com.turing.api.board.repository.BoardRepository;
-import com.turing.api.board.model.Board;
 import com.turing.api.common.component.Messenger;
-import com.turing.api.common.component.PageRequestVo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

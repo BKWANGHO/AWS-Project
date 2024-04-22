@@ -1,10 +1,9 @@
 'use client'
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import axios from 'axios';
 import Link from "next/link";
 import { PG } from "./components/common/enums/PG";
-import AxiosConfig, { instance } from "./components/common/configs/axios-config";
 import { API } from "./components/common/enums/API";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
@@ -12,74 +11,109 @@ import { useSelector } from "react-redux";
 import { getAuth, getIdCheck } from "./components/users/service/user-slice";
 import { existsByUsername, login } from "./components/users/service/user-service";
 import { IUser } from "./components/users/model/user.model";
-import {parseCookies,destroyCookie,setCookie} from "nookies"
+import { parseCookies, destroyCookie, setCookie } from "nookies"
 import { jwtDecode } from "jwt-decode";
 
 export default function Home() {
   const dispatch = useDispatch()
   const router = useRouter()
+  
   const [isWrongID, setisWrongID] = useState('')
   const [isexistsID, setisexistsID] = useState('')
+
   const [isWrongPW, setisWrongPW] = useState(false)
-  const [user,setUser] = useState({} as IUser)
+  const [user, setUser] = useState({} as IUser)
+  const [len, setLen] = useState(false)
+  const formRef = useRef<HTMLInputElement>(null)
 
   const getUsernameCheck = useSelector(getIdCheck)
+  
   const auth = useSelector(getAuth)
 
 
   const handleUsername = (e: any) => {
     const ID_CHECK = /^[a-zA-Z][a-zA-Z]{2,10}$/g
     //영어대문자로 시작하는 6~20자의 영어단어 
-    const username = e.target.value
+    setLen(false)
 
-    if(ID_CHECK.test(username)){
+    if (ID_CHECK.test(e.target.value)) {
       setisWrongID('false')
       setUser({
-        ...user,username:username
+        ...user, username: e.target.value
       })
-    }else{
+    } else {
       setisWrongID('true')
     }
   }
 
   const handlePassword = (e: any) => {
-    const PW_CHECK = /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"][a-zA-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{5,19}$/g;
-    if(PW_CHECK){
+    setLen(false)
+    const PW_CHECK = /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"][a-zA-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{0,19}$/g;
+    if (PW_CHECK.test(e.target.value)) {
       setisWrongPW(true)
       setUser({
-        ...user,password:e.target.value
+        ...user, password: e.target.value
       })
-    }else{
+    } else {
       setisWrongPW(false)
     }
   }
 
   const handleSubmit = () => {
+    setLen(true)
     dispatch(existsByUsername(user.username))
-    console.log('보내는 데이터 ' + user.username)
-    console.log('받은데이티 : '+getUsernameCheck )
-    // dispatch(login(user))}
-    if(getUsernameCheck){
-      setisexistsID('true')
+      .then((res: any) => {
+        if (res.payload === true) {
+          dispatch(login(user))
+            .then((resp: any) => {
+              setCookie({}, 'message', resp.payload.message, { httpOnly: false, path: '/' })
+              setCookie({}, 'accessToken', resp.payload.accessToken, { httpOnly: false, path: '/' })
+              console.log('서버에서 넘어온 res' + JSON.stringify(res.payload))
+              console.log('서버에서 넘어온 메세지' + parseCookies().message)
+              console.log('서버에서 넘어온 토큰' + JSON.stringify(parseCookies().accessToken))
+              console.log('토큰을 디코드한 내용' + JSON.stringify(jwtDecode<any>(parseCookies().token)))
+              router.push(`${PG.BOARD}/list`)
+            })
+            .catch(() => {
+              console.log('로그인 실패')
 
+            })
+        } else {
+          console.log('아이디가 존재하지 않습니다.')
+          setisWrongID('')
+          
+        }
+      })
+      .catch((err: any) => {
+      })
+      .finally(() => {
+        console.log('최종적으로 반드시 이뤄져야 할 로직')
+
+      })
+    console.log('보내는 데이터 ' + user.username)
+    console.log('받은데이티 : ' + getUsernameCheck)
+
+    if (formRef.current) {
+      formRef.current.value = "";
     }
   }
 
 
-  useEffect(() => {
-    
-    if (auth.message === "SUCCESS") {
-      setCookie({},'message',auth.message,{ httpOnly: false, path: '/' })
-      setCookie({},'token',auth.token,{ httpOnly: false, path: '/' })
-      console.log('서버에서 넘어온 메세지'+ parseCookies().message)
-      console.log('서버에서 넘어온 토큰'+ parseCookies().token)
-      console.log('토큰을 디코드한 내용' +JSON.stringify(jwtDecode<any>(parseCookies().token)))
+  // useEffect(() => {
 
-      router.push(`${PG.BOARD}/list`)
-    }else {
-    }
+  //   if (auth.message === "SUCCESS") {
+  //     setCookie({},'message',auth.message,{ httpOnly: false, path: '/' })
+  //     setCookie({},'token',auth.token,{ httpOnly: false, path: '/' })
+  //     console.log('서버에서 넘어온 메세지'+ parseCookies().message)
+  //     console.log('서버에서 넘어온 토큰'+ parseCookies().token)
+  //     console.log('토큰을 디코드한 내용' +JSON.stringify(jwtDecode<any>(parseCookies().token)))
 
-  }, [auth])
+  //     router.push(`${PG.BOARD}/list`)
+  //   }else {
+  //   }
+  // }, [auth])
+
+
 
   return (<div className="text-center" >
     <h1 >Welcome to react world  !!</h1><br />
@@ -95,7 +129,7 @@ export default function Home() {
           <p className="text-xl text-gray-600 text-center">Welcome back!</p>
           <div className="mt-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-             ID
+              ID
             </label>
             <input
               onChange={handleUsername}
@@ -104,11 +138,12 @@ export default function Home() {
               required
             />
           </div>
-          {isWrongID !== '' && (isWrongID ==='true'? 
-          (<pre><h6 className="text-red-500">잘못된 형식입니다.</h6> </pre>) :
-          (<pre><h6 className="text-blue-500">올바른 형식입니다.</h6> </pre>)) }
+          {isWrongID !== '' && (isWrongID === 'true' ?
+            (<pre><h6 className="text-red-500">잘못된 형식입니다.</h6> </pre>) :
+            (<pre><h6 className="text-blue-500">올바른 형식입니다.</h6> </pre>))}
 
-          {user.username?.length !=0 && getUsernameCheck && (<pre><h6 className="text-red-500">없는아이디입니다.</h6> </pre>) }
+          {len && !getUsernameCheck && (<pre><h6 className="text-red-500">없는아이디입니다.</h6> </pre>)}
+
           <div className="mt-4 flex flex-col justify-between">
             <div className="flex justify-between">
               <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -116,13 +151,14 @@ export default function Home() {
               </label>
             </div>
             <input
+            ref={formRef}
               onChange={handlePassword}
               className="text-gray-700 border border-gray-300 rounded py-2 px-4 block w-full focus:outline-2 focus:outline-blue-700"
               type="password"
             />
-              {isWrongPW && (<pre>
-            <h6 className="text-red-500">잘못된 형식입니다.</h6>
-          </pre>)}
+            {!isWrongPW && (<pre>
+              <h6 className="text-red-500">잘못된 형식입니다.</h6>
+            </pre>)}
             <a
               href="#"
               className="text-xs text-gray-500 hover:text-gray-900 text-end w-full mt-2"

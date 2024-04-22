@@ -3,7 +3,6 @@ package com.turing.api.board;
 import com.turing.api.board.model.BoardDto;
 import com.turing.api.board.service.BoardService;
 import com.turing.api.common.component.Messenger;
-import com.turing.api.common.component.PageRequestVo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

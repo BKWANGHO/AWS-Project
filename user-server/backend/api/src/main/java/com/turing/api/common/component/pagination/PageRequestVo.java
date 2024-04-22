@@ -1,35 +1,33 @@
-package com.turing.api.common.component;
+package com.turing.api.common.component.pagination;
 
 
-import com.turing.api.article.model.ArticleDto;
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @Getter
 @Builder
 @AllArgsConstructor
-public class PageRequestFileVo {
-
+public class PageRequestVo {
     private int page;
     private int size;
     private String type;
     private String keyword;
 
-    private List<ArticleDto> pageFileDto;
-
-    public PageRequestFileVo( ) {
-        this.page =1;
+    public PageRequestVo() {
+        this.page = 1;
         this.size = 10;
     }
+
     public Pageable getPageable(Sort sort){
-        return PageRequest.of(page -1, size, sort);
+        return PageRequest.of(page -1,size,sort);
     }
+
 
 }

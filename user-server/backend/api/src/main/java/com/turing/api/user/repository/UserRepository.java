@@ -1,7 +1,6 @@
 package com.turing.api.user.repository;
 
 
-import com.turing.api.common.component.PageRequestVo;
 import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
 import org.springframework.data.jpa.repository.JpaRepository;

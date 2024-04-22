@@ -8,7 +8,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 public class CorsConfig {
-
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         return request -> {
@@ -21,5 +20,4 @@ public class CorsConfig {
             return config;
         };
     }
-
 }

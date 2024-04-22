@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
 
         return Messenger.builder()
                 .message(flag ? "SUCCESS" : "FAILURE")
-                .token(flag ? createToken(param) : "None")
+                .accessToken(flag ? createToken(param) : "None")
                 .build();
     }
 

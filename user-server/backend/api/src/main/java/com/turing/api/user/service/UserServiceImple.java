@@ -125,7 +125,7 @@ public class UserServiceImple implements UserService {
 
         String accessToken = jwtProvider.createToken(entityToDto(user));
 
-        jwtProvider.getPayload(accessToken);
+        jwtProvider.printPayload(accessToken);
 
         repository.modifyTokenById(user.getId(), accessToken);
 
@@ -140,5 +140,11 @@ public class UserServiceImple implements UserService {
     @Override
     public Boolean existsByUsername(String param) {
         return repository.existsByUsername(param);
+    }
+
+    @Override
+    public Boolean logout(Long id) {
+
+        return null;
     }
 }

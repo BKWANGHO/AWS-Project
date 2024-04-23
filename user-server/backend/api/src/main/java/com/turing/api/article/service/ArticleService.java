@@ -17,11 +17,11 @@ import java.util.Optional;
 public interface ArticleService extends CommandService<ArticleDto>, QueryService<ArticleDto> {
 
 
-    default Article dtoToEntity(ArticleDto articleDto, Board board){
+    default Article dtoToEntity(ArticleDto articleDto, Board board, User user){
         return Article.builder()
                 .title(articleDto.getTitle())
                 .content(articleDto.getContent())
-//                .writer(User.builder().id(articleDto.getWriter()).build())
+                .writer(user)
                 .board(board)
                 .build();
     }

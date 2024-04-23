@@ -1,8 +1,14 @@
-import axios from "axios"
+import axios, { AxiosInstance } from "axios"
 import { parseCookies } from "nookies";
+import { deflate } from "zlib";
 
+
+
+export default function instance(){
 const instance = axios.create({baseURL: process.env.NEXT_PUBLIC_API_URL})
-
+setInterceptor(instance)
+return instance
+}
 
 // export default function AxiosConfig(){
 //     return{
@@ -16,31 +22,23 @@ const instance = axios.create({baseURL: process.env.NEXT_PUBLIC_API_URL})
 // } 고정된 값 
 
 
-
  // 변경할수 있게끔 코딩 
-instance.interceptors.request.use(
-    (request)=>{
-        const accessToken = parseCookies().accessToken;
-        console.log('AXIOS 인터셉터에서 쿠키에서 토큰 추출')
-        request.headers['Content-Type'] = "application/json"
-        request.headers['Authorization'] = `Bearer ${accessToken}`
-
-        return request
-    },
-    (error)=>{
-        console.log('AXIOS 인터셉터에서 발생한 에러 : '+error)
+ export const setInterceptor = (inputInstance:AxiosInstance) => {
+    inputInstance.interceptors.request.use(
+    (config) => {
+        config.headers["Content-Type"] = "application/json"
+        config.headers["Authorization"] = `Bearer ${parseCookies().accessToken}`
+        return config
+    }, (error) => {
+        console.log("AXIOS 인터셉터 에러 발생 : " + error)
         return Promise.reject(error)
-    }
-)
-instance.interceptors.response.use(
-    (response)=>{
-        if(response.status === 404){
-            console.log('AXIOS 인터셈터에서 발생한 에러로 토큰이 없어서 404페이지로 넘어감')
+    })
+    inputInstance.interceptors.response.use(
+        (response) => {
+            if(response.status === 404) console.log("AXIOS 인터셉터 404 발생")
+            return response
         }
-        return response
-    }
+    )
+    return inputInstance
+}
 
-)
-
-
- export default instance 

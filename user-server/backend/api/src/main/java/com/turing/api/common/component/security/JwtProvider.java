@@ -2,10 +2,14 @@ package com.turing.api.common.component.security;
 
 
 import com.turing.api.user.model.UserDto;
+import com.turing.api.user.repository.UserRepository;
+import com.turing.api.user.service.UserService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -17,6 +21,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
+import java.util.stream.Stream;
 
 @Component
 @Slf4j
@@ -29,8 +34,9 @@ public class JwtProvider {
 
     Instant expiredDate = Instant.now().plus(1, ChronoUnit.DAYS);
 
-    public JwtProvider (@Value("${jwt.secret}") String secretKey){
+    public JwtProvider(@Value("${jwt.secret}") String secretKey) {
         this.secretkey = Keys.hmacShaKeyFor(Decoders.BASE64URL.decode(secretKey));
+
     }
 
     public String createToken(UserDto userDto) {
@@ -47,7 +53,8 @@ public class JwtProvider {
         log.info("로그인성공으로 발급된 토큰 " + toke);
         return toke;
     }
-    public String getPayload(String accessToken) {
+
+    public void printPayload(String accessToken) {
         String[] chunks = accessToken.split("\\.");
         Base64.Decoder decoder = Base64.getUrlDecoder();
         String header = new String(decoder.decode(chunks[0]));
@@ -55,16 +62,19 @@ public class JwtProvider {
 
         log.info("token Header" + header);
         log.info("token payload" + payload);
-//        return new StringBuilder().append(header).append(payload).toString();
-        return header;
     }
 
     public String extractTokenFromHeader(HttpServletRequest request) {
-        String bearerToken =  request.getHeader("Authorization");
-
-        if(bearerToken != null && bearerToken.startsWith("Bearer")){
-            return bearerToken.substring(7);
-        }
-        return null;
+        String bearerToken = request.getHeader("Authorization");
+        return bearerToken != null && bearerToken.startsWith("Bearer ") ?
+                bearerToken.substring(7) : "undefined";
     }
+
+    public Claims getpayload(String accessToken) {
+        return Jwts.parser().verifyWith(secretkey).build()
+                .parseSignedClaims(accessToken).getPayload();
+    }
+
+
+
 }

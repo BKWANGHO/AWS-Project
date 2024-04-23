@@ -5,7 +5,7 @@ import { IUser } from "../model/user.model"
 export const findAllUsersAPI = async (page:number)=>{
 
     try {
-        const response = await instance.get('/users/list',{
+        const response = await instance().get('/users/list',{
             params:{page,limit:10}
         })
         return response.data
@@ -16,7 +16,7 @@ export const findAllUsersAPI = async (page:number)=>{
 
 export const findUserByIdAPI = async (id:number)=>{
     try{
-        const response = await instance.get('/users/detail',{
+        const response = await instance().get('/users/detail',{
             params:{id}
         })
     return response.data
@@ -27,7 +27,7 @@ export const findUserByIdAPI = async (id:number)=>{
 export const modifyUserAPI = async (dto:IUser)=>{
     console.log(dto)
     try{
-        const response = await instance.put('/users/modify', dto)
+        const response = await instance().put('/users/modify', dto)
     return response.data
     }catch(error){
     console.log(error)
@@ -35,7 +35,7 @@ export const modifyUserAPI = async (dto:IUser)=>{
     
 export const userCountAPI = async ()=>{
     try{
-            const response = await instance.get('/users/count',{
+            const response = await instance().get('/users/count',{
               
             })
         return response.data
@@ -45,7 +45,7 @@ export const userCountAPI = async ()=>{
 
 export const deleteUserAPI = async (id:number)=>{
     try{
-        const response = await instance.get('/users/delete',{
+        const response = await instance().get('/users/delete',{
             params:{id}
         })
 
@@ -57,7 +57,7 @@ export const deleteUserAPI = async (id:number)=>{
 export const loginAPI = async (user:IUser)=>{
     
     try{
-        const response = await instance.post('/users/login',user)
+        const response = await instance().post('/auth/login',user)
 
         return response.data
     }catch(error){
@@ -67,7 +67,7 @@ export const loginAPI = async (user:IUser)=>{
 
 export const existsByUsernameAPI = async (username:string)=>{
     try{
-        const response = await instance.get('/users/exists-Username',{
+        const response = await instance().get('/auth/exists-Username',{
             params: {username}})
         return response.data
     }catch(error){
@@ -76,8 +76,8 @@ export const existsByUsernameAPI = async (username:string)=>{
     
 export const logoutAPI = async () => {
     try{
-        const response = await instance.get('/users/logout',{params : { }})
-        
+        const response = await instance().get('/users/logout',)
+        return response.data
     }catch(error){
         console.log(error)
     }

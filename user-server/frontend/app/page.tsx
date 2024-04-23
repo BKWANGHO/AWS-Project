@@ -63,16 +63,19 @@ export default function Home() {
     setLen(true)
     dispatch(existsByUsername(user.username))
       .then((res: any) => {
+        console.log("이름확인 완료")
         if (res.payload === true) {
           dispatch(login(user))
             .then((resp: any) => {
               setCookie({}, 'message', resp.payload.message, { httpOnly: false, path: '/' })
               setCookie({}, 'accessToken', resp.payload.accessToken, { httpOnly: false, path: '/' })
-              console.log('서버에서 넘어온 res' + JSON.stringify(res.payload))
-              console.log('서버에서 넘어온 메세지' + parseCookies().message)
-              console.log('서버에서 넘어온 토큰' + JSON.stringify(parseCookies().accessToken))
-              console.log('토큰을 디코드한 내용' + JSON.stringify(jwtDecode<any>(parseCookies().token)))
+              console.log('서버에서 넘어온 res : ' + JSON.stringify(res.payload))
+              console.log('서버에서 넘어온 메세지 : ' + parseCookies().message)
+              console.log('서버에서 넘어온 토큰 : ' + JSON.stringify(parseCookies().accessToken))
+              console.log('토큰을 디코드한 내용 : ' + jwtDecode<any>(parseCookies().accessToken).username)
+              
               router.push(`${PG.BOARD}/list`)
+              router.refresh()
             })
             .catch(() => {
               console.log('로그인 실패')
@@ -90,8 +93,6 @@ export default function Home() {
         console.log('최종적으로 반드시 이뤄져야 할 로직')
 
       })
-    console.log('보내는 데이터 ' + user.username)
-    console.log('받은데이티 : ' + getUsernameCheck)
 
     if (formRef.current) {
       formRef.current.value = "";

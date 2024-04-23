@@ -5,6 +5,8 @@ import com.turing.api.article.repository.ArticleRepository;
 import com.turing.api.board.model.Board;
 import com.turing.api.board.repository.BoardRepository;
 import com.turing.api.common.component.Messenger;
+import com.turing.api.user.model.User;
+import com.turing.api.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,12 @@ public class ArticleServiceImpl implements ArticleService {
 
     private final ArticleRepository repository;
     private final BoardRepository boardRepo;
-
+    private final UserRepository userRepo;
     @Override
     public Messenger save(ArticleDto articleDto) {
         Board board = boardRepo.findById(articleDto.getBoard()).orElseThrow();
-     repository.save(dtoToEntity(articleDto,board));
+        User user = userRepo.findById(articleDto.getWriter()).orElseThrow();
+     repository.save(dtoToEntity(articleDto,board,user));
         return Messenger.builder()
                 .message("SUCCESS")
                 .build();

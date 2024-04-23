@@ -1,15 +1,17 @@
-package com.turing.api.common.security;
-
+package com.turing.api.user.service;
 
 import com.turing.api.common.component.Messenger;
-import com.turing.api.common.security.service.AuthService;
 import com.turing.api.user.model.UserDto;
+import com.turing.api.user.service.UserService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @ApiResponses({
@@ -22,12 +24,17 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class AuthController {
-
-    private final AuthService service;
+    private final UserService service;
 
     @PostMapping("/login")
     public ResponseEntity<Messenger> login(@RequestBody UserDto param){
         log.info("입력받은 정보 : {}",param);
         return ResponseEntity.ok(service.login(param));
+    }
+
+    @GetMapping("/exists-Username")
+    public ResponseEntity<Boolean> existsByUsername(@RequestParam("username") String param){
+        log.info("입력받은 정보 : {}",param);
+        return ResponseEntity.ok(service.existsByUsername(param));
     }
 }

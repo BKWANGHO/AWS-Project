@@ -8,6 +8,7 @@ import { findAllboards } from "@/app/components/board/service/board-service";
 import { getAllboards } from "@/app/components/board/service/board-slice";
 import { PG } from "@/app/components/common/enums/PG";
 import { MyTypography } from "@/app/components/common/style/cell";
+import usersDetailPage from "@/app/pages/users/detail/[id]/page";
 import { AttachFile, FmdGood, ThumbUpAlt } from "@mui/icons-material";
 import { write } from "fs";
 import { NextPage } from "next";
@@ -25,6 +26,10 @@ export default function WriteArticlePage(props: any) {
     const router = useRouter();
     const [article,setArticle] =useState({} as IArticle)
 
+
+    const [content,setContent] = useState("")
+
+
     useEffect(()=>{
         dispatch(findAllboards(1))
         setArticle({...article,board:props.params.id })
@@ -40,7 +45,6 @@ export default function WriteArticlePage(props: any) {
     const handelCancel = () => { router.back() }
 
     const handleSubmit = () => { 
-        // setArticle({...article, writer:parseCookies().token})
         dispatch(saveArticle(article))
 
     }
@@ -52,7 +56,15 @@ export default function WriteArticlePage(props: any) {
         setArticle(i => ({ ...i, [name]: value }));
       };
 
-// const cookies = parseCookies(req.headers.cookie);
+      const selectHandler = (e:any)=>{
+        setContent(e.target.value)
+      }
+
+      const options =[
+        {id:1,title:"REVIEW",content:"리뷰게시판"},
+        {id:2,title:"QNA",content:"Q&A"},
+        {id:3,title:"FREE",content:"자유게시판"}
+      ]
 
 
       console.log(article)
@@ -64,11 +76,13 @@ export default function WriteArticlePage(props: any) {
             <select id="countries" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg
              focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600
               dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              name="board" onChange={handleInsert}
+              name="board" 
+              onChange={handleInsert}
+            //   onChange={selectHandler}
               defaultValue={props.params.id}>
                
-                {boardList.map((v:IBoard) =>(<option value={v.id}>{v.title}</option>))}
-                
+                {boardList.map((v:IBoard) =>(<option  value={v.id}>{v.content}</option>))}
+                {/* {options.map((item)=>(<option key={item.id} title ={item.title}>{item.content}</option>))} */}
             </select>
         </form>
 

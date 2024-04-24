@@ -5,7 +5,9 @@ import com.turing.api.common.component.Messenger;
 import com.turing.api.user.model.User;
 import com.turing.api.user.model.UserDto;
 import com.turing.api.user.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Payload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class UserServiceImple implements UserService {
     @Override
     public Messenger save(UserDto userDto) {
 
-        User user = repository.save(dtoToEntity(userDto));
+        var user = repository.save(dtoToEntity(userDto));
 
         return Messenger.builder()
                 .message(user instanceof User ? "SUCCESS":"FAIURE")
@@ -61,7 +63,7 @@ public class UserServiceImple implements UserService {
 
     @Override
     public Optional<UserDto> modify(UserDto userDto) {
-        Optional<User> user = repository.findById(userDto.getId());
+        var user = repository.findById(userDto.getId());
         user.get().setName(userDto.getName());
         user.get().setPhone(userDto.getPhone());
         user.get().setJob(userDto.getJob());
@@ -109,7 +111,7 @@ public class UserServiceImple implements UserService {
 
     @Override
     public Optional<UserDto> findUserByUsername(String username) {
-        Optional<User> user = repository.findByUsername(username);
+        var user = repository.findByUsername(username);
         return Optional.of(entityToDto(user.get()));
     }
 
@@ -119,11 +121,11 @@ public class UserServiceImple implements UserService {
     @Override
     public Messenger login(UserDto param) {
         log.info("로그인 서비스 확인 : "+param);
-        User user = repository.findByUsername(param.getUsername()).get();
+        var user = repository.findByUsername(param.getUsername()).get();
 
-        boolean flag = user.getPassword().equals(param.getPassword());
+        var flag = user.getPassword().equals(param.getPassword());
 
-        String accessToken = jwtProvider.createToken(entityToDto(user));
+        var accessToken = jwtProvider.createToken(entityToDto(user));
 
         jwtProvider.printPayload(accessToken);
 
@@ -135,16 +137,26 @@ public class UserServiceImple implements UserService {
                 .build();
     }
 
-
-
     @Override
     public Boolean existsByUsername(String param) {
         return repository.existsByUsername(param);
     }
 
+    @Transactional
     @Override
-    public Boolean logout(Long id) {
+    public Boolean logout(String token) {
+        String accessToken = token != null && token.startsWith("Bearer ") ?
+                token.substring(7) : "undefined";
 
-        return null;
+        Long id = jwtProvider.getpayload(accessToken).get("userId", Long.class);
+
+        String updateToken = null;
+
+        Boolean a = repository.existsById(id);
+
+        repository.modifyTokenById(id,updateToken);
+
+        log.info("결과 : {}",a);
+        return a;
     }
 }

@@ -13,6 +13,7 @@ public interface BoardService extends CommandService<BoardDto>, QueryService<Boa
         return Board.builder()
                 .title(boardDto.getTitle())
                 .description(boardDto.getDescription())
+                .content(boardDto.getContent())
                 .build();
     }
 
@@ -20,6 +21,7 @@ public interface BoardService extends CommandService<BoardDto>, QueryService<Boa
         return BoardDto.builder()
                 .id(board.getId())
                 .title(board.getTitle())
+                .content(board.getContent())
                 .description(board.getDescription())
                 .regDate(String.valueOf(board.getRegDate()))
                 .modDate(String.valueOf(board.getRegDate()))

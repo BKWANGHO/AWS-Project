@@ -6,7 +6,8 @@ export const initialState:IBoard={
     title : '',
     description : '',
     regDate : '',
-    modDate : ''
+    modDate : '',
+    content : ''
     
 
 }

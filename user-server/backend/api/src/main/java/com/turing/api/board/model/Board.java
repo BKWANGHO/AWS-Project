@@ -20,6 +20,7 @@ public class Board extends BaseEntity {
     @Column(name = "board_id")
     private Long id;
     private String title;
+    private String content;
     private String description;
 
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL,orphanRemoval = true)

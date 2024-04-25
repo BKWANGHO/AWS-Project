@@ -36,12 +36,12 @@ export const articleCountAPI = async ()=>{
     }catch(error){
     console.log(error)
     }}        
+    
 export const saveArticleAPI = async (article:IArticle)=>{
     try{
         const response = await instance().post('/articles',article)
-
-        console.log("api"+JSON.stringify( response.data))
-        return response.data.message
+        console.log(JSON.stringify(article))
+        return response.data
     }catch(error){
         console.log(error)
     }}        

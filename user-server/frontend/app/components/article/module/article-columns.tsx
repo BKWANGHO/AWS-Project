@@ -73,8 +73,15 @@ export default function articlesColums(): GridColDef[] {
         field: 'modDate',
         headerName: '수정일',
         renderCell : ({row}:CellType) => MyTypography(row.modDate,"1rem")
+    },
+    {
+        flex: 0.04,
+        minWidth: 30,
+        sortable: false,
+        field: 'delete',
+        headerName: '삭제',
+        renderCell : ({row}:CellType) => <Link href='#'>{MyTypography("삭제","1rem")}</Link>
     }
-
 
 
 ]

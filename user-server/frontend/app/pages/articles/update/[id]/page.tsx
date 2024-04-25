@@ -22,7 +22,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 
-export default function WriteArticlePage(props: any) {
+export default function UpdateArticlePage(props: any) {
     const dispatch = useDispatch();
     const boardList = useSelector(getAllboards);
 
@@ -36,7 +36,6 @@ export default function WriteArticlePage(props: any) {
     },[])
     
     const handelCancel = () => { router.back() }
-
 
     const onSubmit = (data:any)=>{
         console.log(JSON.stringify(data))

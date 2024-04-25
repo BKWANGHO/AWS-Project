@@ -19,9 +19,7 @@ export default function usersDetailPage({ params }: any) {
 
   const [dto,setDto] = useState({id:params.id, password : '', name:'',phone :'',job:''});
 
-  
   useEffect(() => { dispatch(findUserById(params.id)) }, [])
-
 
   const handleChange = (e:any) => {
     const {
@@ -29,7 +27,6 @@ export default function usersDetailPage({ params }: any) {
     } = e;
     setDto(dto => ({ ...dto, [name]: value }));
   };
-
 
   const router = useRouter()
   const handleSubmit = ()=> {
@@ -41,7 +38,6 @@ const handledelete = ()=>{
   dispatch(deleteUser(params.id))
   router.push( `${PG.USER}/list`)
 }
-
 
   return (<>
     <h1>게시판 상세페이지</h1>
@@ -62,6 +58,7 @@ const handledelete = ()=>{
     <span>{MyTypographyLeft('수정일 : '+getUser.modDate, "1.5rem")}</span>
 
     <button type="submit"  onClick={handleSubmit}>수정완료</button><br />
+    
     <button type="submit"  onClick={handledelete}>회원탈퇴</button><br />
 
   </>)

@@ -119,11 +119,11 @@ public class UserServiceImple implements UserService {
 //  Srp 에 따라 아이디 존재여부를 프론트에서 먼저 판단하고 넘어옴 (시큐리티)
     @Transactional
     @Override
-    public Messenger login(UserDto param) {
-        log.info("로그인 서비스 확인 : "+param);
-        var user = repository.findByUsername(param.getUsername()).get();
+    public Messenger login(UserDto userDto) {
+        log.info("로그인 서비스 확인 : "+userDto);
+        var user = repository.findByUsername(userDto.getUsername()).get();
 
-        var flag = user.getPassword().equals(param.getPassword());
+        var flag = user.getPassword().equals(userDto.getPassword());
 
         var accessToken = jwtProvider.createToken(entityToDto(user));
 

@@ -1,5 +1,6 @@
 package com.turing.api.article.service;
 
+import com.turing.api.article.model.Article;
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.article.repository.ArticleRepository;
 import com.turing.api.board.model.Board;
@@ -21,13 +22,18 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository repository;
     private final BoardRepository boardRepo;
     private final UserRepository userRepo;
+
     @Override
     public Messenger save(ArticleDto articleDto) {
         Board board = boardRepo.findById(articleDto.getBoard()).orElseThrow();
         User user = userRepo.findById(articleDto.getWriter()).orElseThrow();
-     repository.save(dtoToEntity(articleDto,board,user));
+
+        Article article = repository.save(dtoToEntity(articleDto,board,user));
+
+
         return Messenger.builder()
-                .message("SUCCESS")
+                .message(article instanceof Article ? "SUCCESS" : "FAILUER")
+                .id(article.getBoard().getId())
                 .build();
     }
 
@@ -67,8 +73,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDto> findByBoardId(Long id) {
-//        return repository.findByBoardId(id).stream().map(i->entityToDto(i)).toList();
-        return repository.getArticlesByBoardId(id)
-                .stream().map(i -> entityToDto(i)).toList();
+        return repository.findAllByBoardIdOrderByIdDesc(id).stream().map(i->entityToDto(i)).toList();
+//        return repository.getArticlesByBoardId(id)
+//                .stream().map(i -> entityToDto(i)).toList();
     }
 }

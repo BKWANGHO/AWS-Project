@@ -48,11 +48,11 @@ import { NextPage } from "next"
 
   const handleSubmit = () => {
    
-    axios.post(`${API.SERVER}/users`, 
-    { username, password,name,phone,job},AxiosConfig())
-        .then(res => { alert(JSON.stringify(res.data)) 
-        router.push(`${PG.USER}/login`)
-        })
+    // axios.post(`${API.SERVER}/users`, 
+    // { username, password,name,phone,job},AxiosConfig())
+    //     .then(res => { alert(JSON.stringify(res.data)) 
+    //     router.push(`${PG.USER}/login`)
+    //     })
 }
 
   return (<>

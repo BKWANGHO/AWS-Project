@@ -16,10 +16,10 @@ import java.util.Objects;
 public interface ArticleRepository extends JpaRepository<Article,Long> {
 
 
-    List<Article> findByBoardId(Long id);
+    List<Article> findAllByBoardIdOrderByIdDesc(Long id);
 
 //  default
-    @Query("Select a from articles a where a.board.id = :boardId")
+    @Query("Select a from articles a where a.board.id = :boardId order by a.board.id desc ")
     public List<Article> getArticlesByBoardId(@Param("boardId") Long id);
 
 //  native (정해진것을 가져올때)

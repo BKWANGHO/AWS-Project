@@ -3,6 +3,7 @@ package com.turing.api.article.service;
 import com.turing.api.article.model.Article;
 import com.turing.api.article.model.ArticleDto;
 import com.turing.api.board.model.Board;
+import com.turing.api.common.component.Messenger;
 import com.turing.api.common.service.CommandService;
 import com.turing.api.common.service.QueryService;
 import com.turing.api.user.model.User;
@@ -32,7 +33,7 @@ public interface ArticleService extends CommandService<ArticleDto>, QueryService
                 .id(article.getId())
                 .title(article.getTitle())
                 .content(article.getContent())
-//                .writer(article.getWriter().getId())
+                .writer(article.getWriter().getId())
                 .board(article.getBoard().getId())
                 .regDate(String.valueOf(article.getRegDate()))
                 .modDate(String.valueOf(article.getRegDate()))
@@ -40,4 +41,5 @@ public interface ArticleService extends CommandService<ArticleDto>, QueryService
     }
 
     List<ArticleDto> findByBoardId(Long id);
+
 }

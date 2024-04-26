@@ -48,3 +48,12 @@ export const saveArticleAPI = async (article:IArticle)=>{
     }catch(error){
         console.log(error)
     }}        
+        
+export const modifyArticleAPI = async (article:IArticle)=>{
+    try{
+        const response = await instance().put('/articles/modify',article)
+        console.log(JSON.stringify(article))
+        return response.data
+    }catch(error){
+        console.log(error)
+    }}        

@@ -4,10 +4,12 @@ import com.turing.api.common.model.BaseEntity;
 import com.turing.api.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Service;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Builder
+@Setter
 @AllArgsConstructor
 @ToString(exclude = {"id"})
 @Entity(name = "articles")

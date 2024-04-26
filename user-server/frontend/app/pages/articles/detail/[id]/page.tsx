@@ -3,7 +3,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react';
 import { MyTypography, MyTypographyLeft } from '@/app/components/common/style/cell';
-import { findArticleById } from '@/app/components/article/service/article.service';
+import { findArticleById, modifyArtilce } from '@/app/components/article/service/article.service';
 import { getArticleById } from '@/app/components/article/service/article.slice';
 import { IArticle } from '@/app/components/article/model/article';
 import { useRouter } from 'next/navigation';
@@ -24,8 +24,10 @@ export default function articleDetailPage({ params }: any) {
 
   const onSubmit = (data:any)=>{
   console.log(JSON.stringify(data))
-
-  
+  dispatch(modifyArtilce(data))
+  .then(()=>{
+    router.back();
+  })
   }
 
   return (<>
@@ -51,7 +53,6 @@ export default function articleDetailPage({ params }: any) {
           </div>
         </div>
       <input type="text" {...register('id', { required: true })} defaultValue={params.id} hidden readOnly />
-      <input type="hidden" {...register('writer', { required: true })} defaultValue={findArticle.writer} readOnly />
       </div>
       <div className="flex w-1/2 margin-right:40px">
         <div>

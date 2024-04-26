@@ -53,7 +53,10 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Optional<ArticleDto> modify(ArticleDto articleDto) {
-        return null;
+        var article = repository.findById(articleDto.getId());
+        article.get().setTitle(articleDto.getTitle());
+        article.get().setContent(articleDto.getContent());
+        return Optional.of(repository.save(article.get())).map(i -> entityToDto(i));
     }
 
     @Override

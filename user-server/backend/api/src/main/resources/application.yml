@@ -2,8 +2,8 @@ spring:
   application:
     name: api
   datasource:
-#    url: jdbc:mysql://43.202.126.165:3306/martindb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-    url: jdbc:mysql://localhost:3307/martindb
+    url: jdbc:mysql://43.202.126.165:3306/martindb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3307/martindb
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver

@@ -28,6 +28,7 @@ function Header() {
   const [showProfile,setShowProfile] = useState(false)
   const dispatch = useDispatch()
   const router = useRouter()
+  
   useEffect(()=>{
     if(parseCookies().accessToken){
       setShowProfile(true)

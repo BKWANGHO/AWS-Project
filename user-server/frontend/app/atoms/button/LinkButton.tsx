@@ -1,5 +1,6 @@
 import { PG } from "@/app/components/common/enums/PG";
-import { jwtDecode } from "jwt-decode";
+import { Http2ServerResponse } from "http2";
+import { JwtPayload, jwtDecode } from "jwt-decode";
 import Link from "next/link"
 import { parseCookies } from "nookies";
 
@@ -7,6 +8,7 @@ interface ILinkButton {
     title: string,
     path: string
 }
+
 
 
 export default function Linkbutton({ title, path }: ILinkButton) {
@@ -27,7 +29,7 @@ export const pages = [
     { id: 3, title: '카운터', path: `${PG.DEMO}/counter` },
     { id: 4, title: '게시판목록', path: `${PG.BOARD}/list` },
     { id: 5, title: '게시글목록', path: `${PG.ARTICLE}/list` },
-    { id: 6, title: '마이페이지', path: `${PG.USER}/detail/${jwtDecode<any>(parseCookies().accessToken).userId}` }]
+    { id: 6, title: '마이페이지', path: `${PG.USER}/detail/${parseCookies()?.accessToken ?  jwtDecode<any>(parseCookies().accessToken).userId : 0 }` }]
 
 
 export const settings = [

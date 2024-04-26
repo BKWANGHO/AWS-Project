@@ -21,6 +21,7 @@ export const findArticleByIdAPI = async (id:number)=>{
     console.log(error)
     }}
 
+
 export const deleteArticleAPI = async (id:number)=>{
     try{
         const response = await instance().get('/articles/delete',{params:{id}})
@@ -28,6 +29,7 @@ export const deleteArticleAPI = async (id:number)=>{
     }catch(error){
         console.log(error)
     }}
+
  
 export const articleCountAPI = async ()=>{
     try{
@@ -36,6 +38,7 @@ export const articleCountAPI = async ()=>{
     }catch(error){
     console.log(error)
     }}        
+    
     
 export const saveArticleAPI = async (article:IArticle)=>{
     try{

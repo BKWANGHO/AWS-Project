@@ -9,6 +9,7 @@ import { deleteUser, findUserById, modifyUser } from '@/app/components/users/ser
 import { IUser } from "@/app/components/users/model/user.model";
 import { useRouter } from "next/navigation";
 import { PG } from "@/app/components/common/enums/PG";
+import { destroyCookie } from "nookies";
 
 
 
@@ -36,14 +37,21 @@ export default function usersDetailPage({ params }: any) {
 
 const handledelete = ()=>{
   dispatch(deleteUser(params.id))
-  router.push( `${PG.USER}/list`)
+  .then(()=>{
+    destroyCookie(null,'accessToken')
+    router.refresh()
+    router.push('/')
+  })
+  .catch(()=>{
+
+  })
 }
 
   return (<>
     <h1>게시판 상세페이지</h1>
-    <span> {MyTypographyLeft('ID :'+params.id, "1.5rem")}</span><br />
+    <span> {MyTypographyLeft('ID : '+params.id, "1.5rem")}</span><br />
 
-    <span>{MyTypographyLeft('아이디 :', "1.5rem")} <input type="text" placeholder={getUser.username} /></span><br />
+    <span>{MyTypographyLeft('아이디 : '+getUser.username, "1.5rem")} </span><br />
 
     <span>{MyTypographyLeft('비밀번호 :', "1.5rem")} <input type="text" placeholder={getUser.password} name="password" onChange={handleChange} /></span><br />
     

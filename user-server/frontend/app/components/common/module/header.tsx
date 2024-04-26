@@ -20,7 +20,10 @@ import Linkbutton, { pages } from '@/app/atoms/button/LinkButton';
 import { parseCookie } from 'next/dist/compiled/@edge-runtime/cookies';
 import { destroyCookie, parseCookies } from 'nookies';
 import { useDispatch } from 'react-redux';
-import { logout } from '../../users/service/user-service';
+import { findUserById, logout } from '../../users/service/user-service';
+import { useSelector } from 'react-redux';
+import { getUserById } from '../../users/service/user-slice';
+import { jwtDecode } from 'jwt-decode';
 
 
 function Header() {
@@ -28,6 +31,7 @@ function Header() {
   const [showProfile,setShowProfile] = useState(false)
   const dispatch = useDispatch()
   const router = useRouter()
+  const getuser = useSelector(getUserById)
   
   useEffect(()=>{
     if(parseCookies().accessToken){
@@ -35,6 +39,7 @@ function Header() {
     }else{
       setShowProfile(false)
     }
+    dispatch(findUserById(parseCookies()?.accessToken ? jwtDecode<any>(parseCookies().accessToken).userId : 0))
   },[parseCookies().accessToken])
 
 
@@ -68,8 +73,8 @@ function Header() {
           </button>
           {showProfile &&
           <div className="flex px-4 py-3 float-end">
-            <span className="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
-            <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 mx-5">name@flowbite.com</span>
+            <Link href={`${PG.USER}/detail/${jwtDecode<any>(parseCookies()?.accessToken).userId}`}><span className="block text-sm text-gray-900 dark:text-white">{getuser.name}</span></Link>
+            <span className="block text-sm  text-gray-500 truncate dark:text-gray-400 mx-5">{getuser.username}</span>
             <span className="block text-sm  text-gray-500 truncate dark:text-gray-400" onClick={logoutHandler}> <a href="#">log out</a> </span>
           </div>
           

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -39,8 +40,15 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Messenger deleteById(Long id) {
-        repository.deleteById(id);
-        return null;
+        return  Messenger.builder()
+                .message(
+                        Stream.of(id)
+                                .peek(i->repository.deleteById(i))
+                                .map(i->"SUCCESS")
+                                .findAny()
+                                .orElseGet(()->"FAILURE")
+                )
+                .build();
     }
 
     @Override

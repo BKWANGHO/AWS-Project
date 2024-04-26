@@ -4,6 +4,8 @@ import { IArticle } from '../model/article'
 import { GridColDef } from '@mui/x-data-grid'
 import { PG } from '../../common/enums/PG'
 import { MyTypography } from '../../common/style/cell'
+import { useDispatch } from 'react-redux'
+import { deleteArticle } from '../service/article.service'
 
 
 interface CellType{
@@ -12,7 +14,9 @@ interface CellType{
 
 
 
+
 export default function articlesColums(): GridColDef[] {
+    const dispatch = useDispatch()
 
     return [
         {
@@ -29,9 +33,7 @@ export default function articlesColums(): GridColDef[] {
         sortable: false,
         field: 'title',
         headerName: '제목',
-        renderCell : ({row}:CellType) => <Typography textAlign="center" sx={{ fontSize: "1rem" }}> 
-        <Link href={`${PG.ARTICLE}/detail/${row.id}`}> {row.title}</Link></Typography>
-        
+        renderCell : ({row}:CellType) => MyTypography(<Link href={`${PG.ARTICLE}/detail/${row.id}`}>{row.title}</Link>,"1rem")  
     },
     {
         flex: 0.04,
@@ -80,10 +82,25 @@ export default function articlesColums(): GridColDef[] {
         sortable: false,
         field: 'delete',
         headerName: '삭제',
-        renderCell : ({row}:CellType) => <Link href='#'>{MyTypography("삭제","1rem")}</Link>
+        renderCell : ({row}:CellType) => <button onClick={()=>{
+        let flag = confirm('게시글 삭제하까?')
+        if(flag){
+            dispatch(deleteArticle(row.id))
+            location.reload()
+        }else{
+            
+        }
+
+
+
+        }}>
+            {MyTypography("삭제","1rem")}</button>
     }
 
 
 ]
+
+
+
 
 }

@@ -22,14 +22,14 @@ export default function Linkbutton({ title, path }: ILinkButton) {
     )
 }
 
-
 export const pages = [
     // { id: 1, title: '회원가입', path: `${PG.USER}/join` },
     // { id: 2, title: '로그인', path: '/' },
     { id: 3, title: '카운터', path: `${PG.DEMO}/counter` },
     { id: 4, title: '게시판목록', path: `${PG.BOARD}/list` },
     { id: 5, title: '게시글목록', path: `${PG.ARTICLE}/list` },
-    { id: 6, title: '마이페이지', path: `${PG.USER}/detail/${parseCookies()?.accessToken ?  jwtDecode<any>(parseCookies().accessToken).userId : 0 }` }]
+    // { id: 6, title: '마이페이지', path: `${PG.USER}/detail/${parseCookies()?.accessToken ?  jwtDecode<any>(parseCookies()?.accessToken).userId : 0 }` }
+]
 
 
 export const settings = [

@@ -48,7 +48,7 @@ export default function Home() {
 
   const handlePassword = (e: any) => {
     setLen(false)
-    const PW_CHECK = /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"][a-zA-Z\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{0,19}$/g;
+    const PW_CHECK = /^[a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"][a-zA-Z0-9\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]{0,19}$/g;
     if (PW_CHECK.test(e.target.value)) {
       setisWrongPW(true)
       setUser({

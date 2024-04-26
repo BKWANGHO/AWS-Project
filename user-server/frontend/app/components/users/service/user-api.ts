@@ -45,7 +45,7 @@ export const userCountAPI = async ()=>{
 
 export const deleteUserAPI = async (id:number)=>{
     try{
-        const response = await instance().get('/users/delete',{
+        const response = await instance().delete('/users/delete',{
             params:{id}
         })
 

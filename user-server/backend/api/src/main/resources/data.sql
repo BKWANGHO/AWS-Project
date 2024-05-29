@@ -21,8 +21,9 @@ insert into users (user_id, username, password, name, phone, job, mod_date, reg_
 insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (20, 'Erek', 20, 'Witchalls', '419-420-6565', 'Budget/Accounting Analyst I','1995-02-01 12:00:00','2024-04-01 12:00:00');
 
 
-insert into boards (board_id, title, description, mod_date, reg_date) values (1, 'REVIEW','리뷰','2024-04-01 12:00:00','2024-04-01 12:00:00');
-insert into boards (board_id, title, description, mod_date, reg_date) values (2, 'QNA','큐엔에이','2024-04-01 12:00:00','2024-04-01 12:00:00');
+insert into boards (board_id, title, content, description, mod_date, reg_date) values (1, 'REVIEW','리뷰', '리뷰를 작성해주세요','2024-04-01 12:00:00','2024-04-01 12:00:00');
+insert into boards (board_id, title, content, description, mod_date, reg_date) values (2, 'QNA', '큐엔에이', '궁금한 점을 물어봐주세요','2024-04-01 12:00:00','2024-04-01 12:00:00');
+insert into boards (board_id, title, content, description, mod_date, reg_date) values (3, 'FREE', '자유게시판','자유게시판입니다.','2024-04-01 12:00:00','2024-04-01 12:00:00');
 
 insert into articles (article_id, title, content, user_id, board_id, mod_date, reg_date) values (1, 'Man in the Gray Flannel Suit, The', 'Apt 530', 6, 1, '2023-05-05 00:10:49', '2024-02-28 04:32:04');
 insert into articles (article_id, title, content, user_id, board_id, mod_date, reg_date) values (2, 'Advantageous', 'Apt 1031', 17, 2, '2023-04-14 12:07:46', '2023-09-30 08:20:52');

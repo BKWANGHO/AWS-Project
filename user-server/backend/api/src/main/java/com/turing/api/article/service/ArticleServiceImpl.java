@@ -56,6 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
         var article = repository.findById(articleDto.getId());
         article.get().setTitle(articleDto.getTitle());
         article.get().setContent(articleDto.getContent());
+
         return Optional.of(repository.save(article.get())).map(i -> entityToDto(i));
     }
 

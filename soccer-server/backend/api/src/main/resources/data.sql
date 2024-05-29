@@ -1,6 +1,6 @@
-
-insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (1, 'Reuven', 1, 'Hammand', '642-988-9762', 'Staff Accountant III','2024-04-01 12:00:00','2024-04-01 12:00:00');
-insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (2, 'Mabelle', 2, 'Quesne', '895-497-2107', 'Web Designer I','2024-04-01 12:00:00','2024-04-01 12:00:00');
+select * from users;
+insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (1, 'Mabelle', 2, 'Quesne', '895-497-2107', 'Web Designer I','2024-04-01 12:00:00','2024-04-01 12:00:00');
+insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (2, 'Reuven', 1, 'Hammand', '642-988-9762', 'Staff Accountant III','2024-04-01 12:00:00','2024-04-01 12:00:00');
 insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (3, 'Sosanna', 3, 'Chawkley', '193-426-1012', 'Structural Engineer','2024-04-01 12:00:00','2024-04-01 12:00:00');
 insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (4, 'Gal', 4, 'Fozard', '708-148-2071', 'Help Desk Operator','2024-04-01 12:00:00','2024-04-01 12:00:00');
 insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (5, 'Felita', 5, 'Locock', '958-456-6583', 'Legal Assistant','2024-04-01 12:00:00','2024-04-01 12:00:00');
@@ -21,8 +21,9 @@ insert into users (user_id, username, password, name, phone, job, mod_date, reg_
 insert into users (user_id, username, password, name, phone, job, mod_date, reg_date) values (20, 'Erek', 20, 'Witchalls', '419-420-6565', 'Budget/Accounting Analyst I','1995-02-01 12:00:00','2024-04-01 12:00:00');
 
 
-insert into boards (board_id, board_name, board_type, mod_date, reg_date) values (1, 'REVIEW','리뷰','2024-04-01 12:00:00','2024-04-01 12:00:00');
-insert into boards (board_id, board_name, board_type, mod_date, reg_date) values (2, 'QNA','큐엔에이','2024-04-01 12:00:00','2024-04-01 12:00:00');
+insert into boards (board_id, title, content, description, mod_date, reg_date) values (1, 'REVIEW','리뷰', '리뷰를 작성해주세요','2024-04-01 12:00:00','2024-04-01 12:00:00');
+insert into boards (board_id, title, content, description, mod_date, reg_date) values (2, 'QNA', '큐엔에이', '궁금한 점을 물어봐주세요','2024-04-01 12:00:00','2024-04-01 12:00:00');
+insert into boards (board_id, title, content, description, mod_date, reg_date) values (3, 'FREE', '자유게시판','자유게시판입니다.','2024-04-01 12:00:00','2024-04-01 12:00:00');
 
 insert into articles (article_id, title, content, user_id, board_id, mod_date, reg_date) values (1, 'Man in the Gray Flannel Suit, The', 'Apt 530', 6, 1, '2023-05-05 00:10:49', '2024-02-28 04:32:04');
 insert into articles (article_id, title, content, user_id, board_id, mod_date, reg_date) values (2, 'Advantageous', 'Apt 1031', 17, 2, '2023-04-14 12:07:46', '2023-09-30 08:20:52');

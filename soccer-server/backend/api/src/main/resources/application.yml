@@ -2,7 +2,8 @@ spring:
   application:
     name: api
   datasource:
-    url: jdbc:mysql://localhost:3306/userdb
+    url: jdbc:mysql://43.202.126.165:3306/martindb?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    url: jdbc:mysql://localhost:3307/martindb
     username: root
     password: root
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -22,7 +23,7 @@ spring:
             '[non_contextual_creation]': true
         '[format_sql]': true
     show-sql: true
-    open-in-view: false
+#    open-in-view: false
 logging:
   level:
     org:
@@ -32,4 +33,4 @@ logging:
 jwt:
   iss: turing.co.kr
   exp: 24*60*60*1000
-  secret: turingturingturingturingturingturingturingturingturingturingturingturing
+  secret: turingturingturingturingturingturingturingturing

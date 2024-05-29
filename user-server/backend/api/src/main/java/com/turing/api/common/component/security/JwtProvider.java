@@ -69,11 +69,11 @@ public class JwtProvider {
         return bearerToken != null && bearerToken.startsWith("Bearer ") ?
                 bearerToken.substring(7) : "undefined";
     }
-
     public Claims getpayload(String accessToken) {
         return Jwts.parser().verifyWith(secretkey).build()
                 .parseSignedClaims(accessToken).getPayload();
     }
+
 
 
 

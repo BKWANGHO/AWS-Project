@@ -30,8 +30,6 @@ public class AuthInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response,
                              Object handler) throws Exception {
-
-
 //        String token = jwtProvider.extractTokenFromHeader(request);
 //        log.info("1- 인터셉터 토큰 로그 Bearer 포함 : {}", token);
 //
@@ -51,8 +49,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 //            }
 //            log.info("4- 인터셉터 최종여부 : {}", true);
 
-
-
 //            Boolean b = Stream.of(request)
 //                    .map(i->jwtProvider.extractTokenFromHeader(i))
 //                    .filter(i->!i.equals("undefined"))
@@ -60,7 +56,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 //                    .map(i->repository.existsById(i))
 //                    .findFirst()
 //                    .isPresent();
-
 
             return Stream.of(request)
                     .map(i->jwtProvider.extractTokenFromHeader(i))
